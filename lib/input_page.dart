@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'card_custom.dart';
+import 'icon_text.dart';
 
 const bottomContainerHeight = 80.0;
 const defaultCardBackgroundColor = Color(0xFF1D1E33);
+const inactivateCardBgColor = Color(0xFF111328);
 const bottomContainerColor = Color(0xFFEB1555);
+enum Gender { Male, Female }
 
 class InputPage extends StatefulWidget {
   @override
@@ -10,6 +15,8 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  Gender selectedGender;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,20 +29,42 @@ class _InputPageState extends State<InputPage> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: Card(
-                      colour: defaultCardBackgroundColor,
+                    child: SelfCard(
+                      onTap: () {
+                        setState(() {
+                          selectedGender = Gender.Male;
+                        });
+                      },
+                      cardChild: IconText(
+                        faIcon: FontAwesomeIcons.mars,
+                        text: 'MALE',
+                      ),
+                      colour: selectedGender == Gender.Male
+                          ? defaultCardBackgroundColor
+                          : inactivateCardBgColor,
                     ),
                   ),
                   Expanded(
-                    child: Card(
-                      colour: defaultCardBackgroundColor,
+                    child: SelfCard(
+                      onTap: () {
+                        setState(() {
+                          selectedGender = Gender.Female;
+                        });
+                      },
+                      cardChild: IconText(
+                        faIcon: FontAwesomeIcons.venus,
+                        text: 'FEMALE',
+                      ),
+                      colour: selectedGender == Gender.Female
+                          ? defaultCardBackgroundColor
+                          : inactivateCardBgColor,
                     ),
                   ),
                 ],
               ),
             ),
             Expanded(
-              child: Card(
+              child: SelfCard(
                 colour: defaultCardBackgroundColor,
               ),
             ),
@@ -43,12 +72,12 @@ class _InputPageState extends State<InputPage> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: Card(
+                    child: SelfCard(
                       colour: defaultCardBackgroundColor,
                     ),
                   ),
                   Expanded(
-                    child: Card(
+                    child: SelfCard(
                       colour: defaultCardBackgroundColor,
                     ),
                   ),
@@ -63,22 +92,5 @@ class _InputPageState extends State<InputPage> {
             ),
           ],
         ));
-  }
-}
-
-class Card extends StatelessWidget {
-  // only set once and cannot be changed
-  final Color colour;
-  Card({@required this.colour});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-        color: colour,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-    );
   }
 }
